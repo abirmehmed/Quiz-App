@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Async/Await Mastery Quiz v2</title>
+<title>Async/Await Mastery Quiz</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
-  * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --bg: #0a0a0a; --bg2: #0d1117; --bg3: #161b22; --border: #30363d; --border2: #1f6feb;
     --green: #3fb950; --green-dim: #238636; --green-glow: rgba(63,185,80,0.15);
@@ -14,12 +13,10 @@
     --gray: #8b949e; --text: #c9d1d9;
     --mono: 'JetBrains Mono','Fira Code','Courier New',monospace;
   }
-  body { background: var(--bg); color: var(--text); font-family: var(--mono); min-height: 100vh; padding: 20px; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--mono); min-height: 100vh; padding: 20px; line-height: 1.6; }
   .wrap { max-width: 900px; margin: 0 auto; }
-  .header {
-    border: 1px solid var(--border2); border-radius: 4px; padding: 16px 20px; margin-bottom: 20px;
-    background: var(--bg2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-  }
+  .header { border: 1px solid var(--border2); border-radius: 4px; padding: 16px 20px; margin-bottom: 20px; background: var(--bg2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
   .header-left { display: flex; align-items: center; gap: 10px; }
   .header::before { content: '>'; color: var(--green); margin-right: 8px; font-weight: 700; }
   .title { font-size: 18px; font-weight: 700; color: var(--green); letter-spacing: 1px; text-transform: uppercase; }
@@ -42,15 +39,16 @@
   .btn.yl:hover { background: rgba(210,153,34,0.15); box-shadow: 0 0 12px rgba(210,153,34,0.15); }
   .btn.cy { border-color: var(--cyan); color: var(--cyan); background: rgba(88,166,255,0.08); }
   .btn.cy:hover { background: rgba(88,166,255,0.15); box-shadow: 0 0 12px rgba(88,166,255,0.15); }
+  .btn.rd { border-color: var(--red); color: var(--red); background: rgba(248,81,73,0.08); }
+  .btn.rd:hover { background: rgba(248,81,73,0.15); box-shadow: 0 0 12px rgba(248,81,73,0.15); }
   .acts { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
   .file-drop { border: 2px dashed var(--border); border-radius: 4px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s; color: var(--gray); font-size: 13px; }
   .file-drop:hover, .file-drop.dragover { border-color: var(--green); background: var(--green-glow); color: var(--green); }
-  .progress { height: 4px; background: #21262d; border-radius: 0; margin-bottom: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .progress { height: 4px; background: #21262d; border: 1px solid var(--border); margin-bottom: 16px; overflow: hidden; }
   .progress > div { height: 100%; background: linear-gradient(90deg, var(--green), var(--cyan)); transition: width 0.4s ease; width: 0%; box-shadow: 0 0 8px rgba(63,185,80,0.4); }
   .meta { font-size: 11px; color: var(--gray); margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
   .meta span { color: var(--cyan); }
   .qtext { font-size: 15px; line-height: 1.7; margin-bottom: 20px; white-space: pre-wrap; color: var(--text); }
-  /* CODE BLOCK */
   .code-block { background: #0a0a0a; border: 1px solid var(--border); border-radius: 4px; margin: 12px 0; overflow: hidden; position: relative; }
   .code-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: var(--bg3); border-bottom: 1px solid var(--border); font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
   .code-dots { display: flex; gap: 6px; }
@@ -66,7 +64,6 @@
   .tok-comment { color: #6e7681; font-style: italic; }
   .tok-op { color: var(--cyan); }
   .tok-bool { color: var(--purple); font-weight: 500; }
-  /* Options */
   .opts { display: flex; flex-direction: column; gap: 10px; }
   .opt { padding: 14px 18px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.5; background: var(--bg); position: relative; }
   .opt:hover { border-color: var(--green-dim); background: rgba(63,185,80,0.05); }
@@ -89,8 +86,17 @@
   .st .lab { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 2px; }
   .wlist { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
   .wit { padding: 14px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; background: var(--bg); border-left: 3px solid var(--red); }
+  .wit.ok { border-left-color: var(--green); }
   .wit .wn { font-weight: 700; color: var(--red); margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-  .hide { display: none !important; }
+  .wit.ok .wn { color: var(--green); }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .cat-item { padding: 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; }
+  .cat-name { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+  .cat-bar { width: 60px; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin: 0 10px; flex: 1; }
+  .cat-bar > div { height: 100%; background: var(--green); border-radius: 2px; }
+  .cat-bar > div.low { background: var(--red); }
+  .cat-bar > div.mid { background: var(--yellow); }
+  .cat-pct { font-size: 12px; color: var(--cyan); font-weight: 700; min-width: 36px; text-align: right; }
   .daily-card { border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 16px; background: var(--bg2); border-left: 3px solid var(--purple); }
   .daily-card .d-title { font-size: 13px; color: var(--purple); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; font-weight: 700; }
   .daily-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -103,13 +109,17 @@
   .hist-table th, .hist-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); color: var(--gray); }
   .hist-table th { color: var(--green); text-transform: uppercase; letter-spacing: 1px; font-size: 11px; font-weight: 500; }
   .hist-table tr:hover td { color: var(--text); background: rgba(255,255,255,0.02); }
+  .kbd-hint { position: fixed; bottom: 12px; right: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 10px 14px; font-size: 11px; color: var(--gray); z-index: 100; opacity: 0.7; transition: opacity 0.2s; }
+  .kbd-hint:hover { opacity: 1; }
+  .kbd-hint kbd { background: var(--bg); border: 1px solid var(--border); border-radius: 2px; padding: 1px 5px; font-family: var(--mono); color: var(--text); font-size: 10px; }
+  .hide { display: none !important; }
+  .scanline { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: rgba(63,185,80,0.04); pointer-events: none; z-index: 9999; animation: scan 5s linear infinite; }
+  @keyframes scan { 0% { top: -3px; } 100% { top: 100%; } }
+  @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } .row { flex-direction: column; } body { padding: 10px; } .kbd-hint { display: none; } }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--gray); }
-  .scanline { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: rgba(63,185,80,0.04); pointer-events: none; z-index: 9999; animation: scan 5s linear infinite; }
-  @keyframes scan { 0% { top: -3px; } 100% { top: 100%; } }
-  @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } .row { flex-direction: column; } body { padding: 10px; } }
 </style>
 <base target="_blank">
 </head>
@@ -128,18 +138,18 @@
     <div class="card">
       <div class="section-title">Question Bank</div>
       <div class="bank-info" id="bank-info">
-        <div class="bi-item">Total: <span id="bi-total">100</span></div>
-        <div class="bi-item">Fundamentals: <span>Q1-Q20</span></div>
-        <div class="bi-item">Event Loop: <span>Q21-Q35</span></div>
-        <div class="bi-item">Errors: <span>Q36-Q50</span></div>
-        <div class="bi-item">Patterns: <span>Q51-Q70</span></div>
-        <div class="bi-item">Advanced: <span>Q71-Q100</span></div>
+        <div class="bi-item">Total: <span id="bi-total">0</span></div>
+        <div class="bi-item">Fundamentals: <span id="bi-fund">0</span></div>
+        <div class="bi-item">Event Loop: <span id="bi-loop">0</span></div>
+        <div class="bi-item">Errors: <span id="bi-error">0</span></div>
+        <div class="bi-item">Patterns: <span id="bi-pattern">0</span></div>
+        <div class="bi-item">Advanced: <span id="bi-advanced">0</span></div>
       </div>
       <div class="section-title" style="margin-top:20px;">Import Custom Bank</div>
       <div class="file-drop" id="file-drop">
         <div style="font-size:24px;margin-bottom:8px;">&#128193;</div>
         <div>Drop JSON file here or click to browse</div>
-        <div style="font-size:11px;margin-top:6px;color:#6e7681;">Format: [{"q":"...","a":["A","B","C","D"],"c":0,"e":"..."}]</div>
+        <div style="font-size:11px;margin-top:6px;color:#6e7681;">Format: [{"q":"...","a":["A","B","C","D"],"c":0,"e":"...","cat":"fundamentals"}]</div>
       </div>
       <input type="file" id="file-input" accept=".json" style="display:none;">
       <div class="acts">
@@ -221,6 +231,10 @@
         <div class="st bad"><div class="num" id="r-wrg">0</div><div class="lab">Failed</div></div>
         <div class="st neu"><div class="num" id="r-pct">0%</div><div class="lab">Integrity</div></div>
       </div>
+      <div id="r-catsec" class="hide">
+        <div class="section-title">Weakness Analysis</div>
+        <div class="cat-grid" id="r-catgrid"></div>
+      </div>
       <div id="r-wsec" class="hide">
         <div class="section-title">Corrupted Packets</div>
         <div class="wlist" id="r-wlist"></div>
@@ -233,452 +247,852 @@
   </div>
 </div>
 
+<div class="kbd-hint" id="kbd-hint">
+  <kbd>1</kbd>-<kbd>4</kbd> Select &nbsp; <kbd>Enter</kbd> Next &nbsp; <kbd>R</kbd> Retry &nbsp; <kbd>Esc</kbd> Back
+</div>
+
 <script>
-// ===================== DEFAULT QUESTION BANK =====================
-var DEFAULT_DB = [
-  {q:"What does the `async` keyword do to a function?",a:["It makes the function execute faster","It forces the function to always return a Promise","It runs the function on a separate thread","It prevents the function from throwing errors"],c:1,e:"An `async function` implicitly wraps its return value in a Promise."},
-  {q:"What is the result of `await 42` inside an async function?",a:["Promise.resolve(42)","undefined","42","TypeError"],c:2,e:"`await` wraps non-promises in Promise.resolve(), so await 42 resolves to 42."},
-  {q:"Can you use `await` inside a regular (non-async) function?",a:["Yes, in all modern browsers","No, never","Only inside modules at the top level (ES2022+)","Only inside forEach callbacks"],c:2,e:"Top-level await is allowed in ES modules. Inside regular functions, await requires the async keyword."},
-  {q:"What does this code output?\nasync function test() { return 1; }\nconsole.log(test());",a:["1","undefined","Promise {<fulfilled>: 1}","throws"],c:2,e:"Async functions always return a Promise, not the raw value."},
-  {q:"What happens if an async function throws an error?",a:["Crashes immediately","Returns a rejected Promise","Error is silently ignored","Returns undefined"],c:1,e:"Throwing inside an async function equals returning Promise.reject(error)."},
-  {q:"Which is valid syntax?",a:["async const fn = () => {}","const fn = async () => {}","const async fn = () => {}","const fn = () => async {}"],c:1,e:"The async keyword goes before the arrow function or function declaration."},
-  {q:"What is async/await primarily syntactic sugar for?",a:["Callbacks","Generators","Promises","Web Workers"],c:2,e:"async/await is built on top of the Promise API."},
-  {q:"Does `await` block the JavaScript main thread?",a:["Yes, completely","No, only pauses the async function","Yes, but only microtasks","Only in Node.js"],c:1,e:"The async function yields control back to the event loop."},
-  {q:"What is the output order?\nconsole.log(1);\nsetTimeout(()=>console.log(2),0);\nPromise.resolve().then(()=>console.log(3));\nconsole.log(4);",a:["1,2,3,4","1,4,3,2","1,4,2,3","1,3,4,2"],c:1,e:"Sync first (1,4), then microtasks (3), then macrotasks (2)."},
-  {q:"What does `return await promise` do vs `return promise`?",a:["Identical in all cases","return await is faster","return await allows catching rejection in try/catch","return promise unwraps automatically"],c:2,e:"Inside try/catch, return await lets you intercept the error before returning."},
-  {q:"Which statement about `await` is FALSE?",a:["Works with any thenable","Can be used multiple times","Converts sync code to Web Worker","Pauses until Promise settles"],c:2,e:"await has nothing to do with Web Workers."},
-  {q:"What is the type of an async arrow function?",a:["Function","AsyncFunction","Promise","GeneratorFunction"],c:1,e:"Async functions are instances of AsyncFunction, a subclass of Function."},
-  {q:"Can a class constructor be `async`?",a:["Yes, natively","No, constructors cannot be async","Only in TypeScript","Only if extends Promise"],c:1,e:"Use a static factory method instead."},
-  {q:"What does this return?\nasync function test(){ return Promise.resolve(10); }\ntest().then(x=>console.log(x));",a:["Promise pending","10","undefined","throws"],c:1,e:"Returning a Promise from async doesn't double-wrap; it resolves to the inner value."},
-  {q:"Where is top-level `await` NOT allowed?",a:["ES modules in browsers","ES modules in Node.js","Regular browser scripts","Inside async functions"],c:2,e:"Regular non-module scripts don't support top-level await."},
-  {q:"What happens if you call an async function but don't await or .then() it?",a:["Doesn't execute","Executes but Promise is ignored","Executes synchronously","Auto-awaits itself"],c:1,e:"The function runs, but you won't know when it finishes or if it errors."},
-  {q:"Which makes an object method async?",a:["{ function async method(){} }","{ async method(){} }","{ method: async function(){} }","Both B and C"],c:3,e:"Both async method(){} and method: async function(){} are valid."},
-  {q:"What is the output?\nconst x = async () => 5;\nconst y = async () => { 5; };\nconsole.log(await x(), await y());",a:["5 5","5 undefined","undefined undefined","SyntaxError"],c:1,e:"Arrow functions with braces need explicit return. Without it, y returns undefined."},
-  {q:"Can `await` be used inside a `switch` in an async function?",a:["No","Yes, anywhere inside async","Only in default case","Only with Promise.all"],c:1,e:"await can appear anywhere inside an async function."},
-  {q:"What does `await` do if the Promise is already resolved?",a:["Waits one tick","Continues synchronously","Yields to microtask queue","Throws error"],c:2,e:"Even if resolved, await schedules continuation as a microtask per spec."},
-  {q:"What is the output order?\nconsole.log(1); setTimeout(()=>console.log(2),0); Promise.resolve().then(()=>console.log(3)); console.log(4);",a:["1,2,3,4","1,4,3,2","1,4,2,3","1,3,4,2"],c:1,e:"Sync (1,4), microtasks (3), macrotasks (2)."},
-  {q:"What happens here?\nasync function test(){ await 1; await 2; await 3; }\ntest(); console.log('done');",a:["done after awaits","done first, async completes in background","blocks until done","done between each await"],c:1,e:"test() returns immediately. done logs synchronously. Awaits resolve via microtasks."},
-  {q:"In what queue do `await` continuations run?",a:["Macrotask","Microtask","Callback","Render"],c:1,e:"await schedules in the microtask queue."},
-  {q:"Output?\nasync function a(){ console.log('a'); }\nasync function b(){ await a(); console.log('b'); }\nb(); console.log('c');",a:["a,b,c","a,c,b","c,a,b","b,a,c"],c:1,e:"a() logs sync. await in b yields, so c logs. Then b resumes via microtask."},
-  {q:"If you `await` inside a `for` loop, how do iterations execute?",a:["All in parallel","Sequentially, one after another","Loop throws","Only first runs"],c:1,e:"Each await pauses the loop body. Iterations complete in order."},
-  {q:"How to make loop iterations run in parallel?",a:["for..of with await","forEach with async","Promise.all(arr.map(async x=>await f(x)))","Cannot run in parallel"],c:2,e:"Promise.all with map fires all Promises simultaneously."},
-  {q:"What is wrong with this?\n[1,2,3].forEach(async x=>{ await delay(100); console.log(x); });\nconsole.log('done');",a:["forEach doesn't exist","forEach ignores returned Promises","await not allowed in callbacks","prints done after numbers"],c:1,e:"forEach fires callbacks immediately and doesn't await them. done prints first."},
-  {q:"What does `Promise.all()` return?",a:["First resolved value","Promise resolving with array of all values","Array of Promises","Last resolved value"],c:1,e:"Resolves with [result1, result2, ...] when all inputs resolve."},
-  {q:"What if one Promise in `Promise.all()` rejects?",a:["Others auto-cancel","Promise.all immediately rejects","Waits for rest, returns partial","Resolves with undefined for rejected"],c:1,e:"Promise.all is fail-fast — one rejection rejects the whole thing."},
-  {q:"Which waits for ALL Promises regardless of resolve/reject?",a:["Promise.all","Promise.race","Promise.allSettled","Promise.any"],c:2,e:"Promise.allSettled never rejects. Returns {status, value} or {status, reason}."},
-  {q:"What does `Promise.race()` do?",a:["Returns all results","Returns/rejects when FIRST settles","Returns first resolve only","Cancels slower"],c:1,e:"Settles as soon as any one input Promise settles."},
-  {q:"What does `Promise.any()` do?",a:["Same as race","First resolve; ignores rejections unless ALL reject","All results like all","Random result"],c:1,e:"Promise.any is 'first success' — only rejects if every input rejects."},
-  {q:"Output?\nconst p=new Promise(r=>setTimeout(r,0,'timeout'));\nconst q=Promise.resolve('instant');\nconsole.log(await Promise.race([p,q]));",a:["timeout","instant","undefined","throws"],c:1,e:"q is already resolved, so it wins immediately."},
-  {q:"Can `await` cause a memory leak?",a:["No, auto GC'd","Yes, if holding large objects while waiting","Only in IE","Only with Promise.all"],c:1,e:"Long-running async functions holding closures over large data prevent GC."},
-  {q:"What is 'zalgo' in async programming?",a:["A testing library","Function that callbacks sync AND async unpredictably","Promise race condition","V8 flag"],c:1,e:"async/await prevents zalgo because await always yields."},
-  {q:"How do you catch a rejected Promise with `await`?",a:[".catch() only","try/catch around the await","if (await promise === false)","await cannot catch"],c:1,e:"try/catch around await catches rejections like sync exceptions."},
-  {q:"What happens to an uncaught error in an async function?",a:["Unhandled Promise rejection","Crashes immediately","Silently swallowed","Converts to warning"],c:0,e:"Uncaught rejections become unhandled Promise rejections."},
-  {q:"Output?\nasync function test(){\n  try{ await Promise.reject('err'); }\n  catch(e){ console.log('caught'); }\n}\ntest();",a:["Uncaught error","caught","undefined","Nothing"],c:1,e:"try/catch properly catches awaited rejections."},
-  {q:"Problem with this Express middleware?\napp.get('/', async(req,res)=>{\n  const data=await db.query(); res.json(data);\n});",a:["await used wrong","Unhandled rejections crash/hang","res.json can't use await","Express doesn't support async"],c:1,e:"Without try/catch or next(err), errors hang the client."},
-  {q:"Correct Express async error pattern?",a:["try/catch + next(err)","Don't use async in Express","Use .then() instead","Add return before res.json"],c:0,e:"Catch errors and pass to next(err) in Express 4."},
-  {q:"Does `fetch()` throw on HTTP 404 or 500?",a:["Yes, always","No, only rejects on network failure","Only on 500","Returns null"],c:1,e:"fetch resolves on HTTP errors. Check response.ok manually."},
-  {q:"Correct fetch error pattern with await?",a:["try/catch is enough","Check if (!response.ok) throw new Error","fetch auto-throws on 404","Use response.catch()"],c:1,e:"fetch resolves even on 404/500. Manual ok checking required."},
-  {q:"What does `finally` do in async try/catch/finally?",a:["Only on success","Only on error","Runs regardless of outcome","Prevents error propagation"],c:2,e:"finally executes whether await succeeded or failed."},
-  {q:"Throw inside `finally` block?",a:["Original error preserved","finally error overrides previous","Nothing special","Creates never-settling Promise"],c:1,e:"A throw in finally masks any previous return or error."},
-  {q:"Can you `await` inside a `catch` block?",a:["No, must be sync","Yes, for fallback async ops","Only in Node.js","Only with Promise.all"],c:1,e:"catch blocks in async functions can use await."},
-  {q:"What is an unhandled promise rejection?",a:["Takes too long to resolve","Rejected Promise with no catch attached","Rejected by browser","Syntax error"],c:1,e:"Any rejected Promise not handled becomes unhandled."},
-  {q:"How to add timeout to an await?",a:["await timeout(op, 5000)","Promise.race([op, new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),5000))])","await op({timeout:5000})","setTimeout(()=>await op,5000)"],c:1,e:"Race the operation against a delayed rejection."},
-  {q:"Difference: return await promise vs return promise?",a:["A is faster","B handles errors better","In try/catch, A catches errors; B does not","Identical in all contexts"],c:2,e:"return await lets you catch rejection inside try/catch."},
-  {q:"Can catch block be followed by .catch() on same async function?",a:["Mutually exclusive","Yes if inner catch re-throws","No, catch consumes all","Only in strict mode"],c:1,e:"If you re-throw, outer .catch() can still fire."},
-  {q:"What does Promise.allSettled return for rejection?",a:["Throws immediately","{status:'rejected', reason:error}","{status:'failed', error:error}","undefined"],c:1,e:"Returns {status, reason} for rejections."},
-  {q:"Output?\nasync function test(){\n  const arr=[1,2,3];\n  arr.forEach(async x=>{ await Promise.resolve(); console.log(x); });\n  console.log('done');\n}\ntest();",a:["1,2,3,done","done,1,2,3","done then 1,2,3 in order","done then 1,2,3 unpredictably"],c:3,e:"forEach doesn't await. done prints first. Numbers via microtasks."},
-  {q:"Correct sequential array processing?",a:["forEach with async","for..of with await","map with async","while pop"],c:1,e:"for..of with await waits for each iteration."},
-  {q:"What is the 'async constructor' anti-pattern?",a:["async constructor()","new on async function","await in class body","return this from constructor"],c:0,e:"Constructors cannot be async. Use static factory."},
-  {q:"How to fix async constructor?",a:["async init() after new","static async factory","Both valid","constructor returning async fn"],c:2,e:"Either init() pattern or static async create() works."},
-  {q:"What is an async IIFE for?",a:["Create module","Use await at top level of non-module script","Make functions faster","Replace Promise.all"],c:1,e:"(async()=>{ await x(); })(); enables top-level await in scripts."},
-  {q:"What is 'fire and forget'?",a:["Uncancellable Promise","Call async fn without await/catch","Fn returns immediately","Memory leak"],c:1,e:"Starting async op but ignoring result/errors. Dangerous."},
-  {q:"What's wrong with fire and forget?",a:["Makes code slower","Errors become unhandled rejections","Blocks main thread","Prevents GC"],c:1,e:"If operation rejects with no listener, it's unhandled."},
-  {q:"How to promisify fs.readFile in Node.js?",a:["Promise(fs.readFile)","util.promisify(fs.readFile)","fs.readFile.async()","Promise.wrap(fs.readFile)"],c:1,e:"util.promisify converts callback-style to Promise-based."},
-  {q:"What does `for await...of` iterate over?",a:["Regular arrays","Async iterables","Objects","Strings"],c:1,e:"Designed for async iterables like async generators."},
-  {q:"Can you `break` from `for await...of`?",a:["No, syntax error","Yes, calls iterator return() for cleanup","Yes but leaks memory","Only if array"],c:1,e:"break works and triggers cleanup via iterator protocol."},
-  {q:"Async generator syntax?",a:["async function* name(){}","function* async name(){}","async function name*(){}","function async* name(){}"],c:0,e:"async function* defines an async generator."},
-  {q:"Purpose of p-limit libraries?",a:["Make code faster","Limit concurrent async operations","Replace Promise.all","Auto error handling"],c:1,e:"Prevents overwhelming APIs with too many parallel requests."},
-  {q:"Output?\nasync function test(){\n  console.log(await Promise.resolve('A'));\n  console.log(await 'B');\n}\ntest();",a:["A then B","B then A","Simultaneous","Error"],c:0,e:"Both valid. await 'B' wraps in Promise.resolve('B')."},
-  {q:"Which creates intentional delay?",a:["await null","await new Promise(r=>setTimeout(r,1000))","await undefined","await setTimeout(()=>{},1000)"],c:1,e:"Promisifying setTimeout is the standard sleep pattern."},
-  {q:"What does `const delay=ms=>new Promise(r=>setTimeout(r,ms));` do?",a:["Rejected after delay","Resolved after delay","Pauses entire program","Macrotask not awaitable"],c:1,e:"Returns Promise resolving after ms milliseconds."},
-  {q:"Can you `await` inside a ternary?",a:["No","Yes: condition ? await a() : await b()","Only in React","Only with parens"],c:1,e:"await works inside expressions including ternaries."},
-  {q:"Issue with await in Array.map without Promise.all?",a:["map doesn't exist","Array of Promises, not values","Throws immediately","Runs sequentially"],c:1,e:"arr.map(async x=>...) returns Promise array. Need Promise.all."},
-  {q:"Output?\nconst results=[1,2,3].map(async x=>x*2);\nconsole.log(results);",a:["[2,4,6]","[Promise,Promise,Promise]","undefined","Error"],c:1,e:"Async callback makes each element a Promise."},
-  {q:"How to get actual values from above?",a:["results.map(r=>r.then(v=>v))","await Promise.all(results)","results.await()","await results"],c:1,e:"Promise.all waits for all and returns values."},
-  {q:"What is an async mutex for?",a:["Encrypt async data","Ensure one async op accesses resource at a time","Speed up async","Cancel Promises"],c:1,e:"Prevents race conditions in concurrent async code."},
-  {q:"Can you `await` a thenable?",a:["No, only native Promises","Yes, any object with .then()","Only in Node.js","Only if extends Promise"],c:1,e:"await accepts any thenable via Promise resolution protocol."},
-  {q:"What is a thenable?",a:["Already-resolved Promise","Object with then(resolve,reject) method","Function returning Promise","Async function"],c:1,e:"Thenables are duck-typed Promises."},
-  {q:"Can async functions be recursive?",a:["No, forbidden","Yes, but need base case","Yes, constant stack","Only with TCO"],c:1,e:"Allowed but each call consumes resources. Need base case."},
-  {q:"Are native Promises cancellable?",a:["Yes via .cancel()","No, not cancellable","Only with AbortController","Only in bluebird"],c:1,e:"Native Promises are not cancellable. AbortController cancels operations like fetch."},
-  {q:"What is AbortController for?",a:["Cancel any Promise","Cancel abortable ops like fetch via signals","Restart async fns","Handle all errors"],c:1,e:"Provides a signal that abortable APIs check."},
-  {q:"What happens if you `await undefined`?",a:["ReferenceError","Returns undefined","Waits forever","Returns null"],c:1,e:"Equivalent to await Promise.resolve(undefined)."},
-  {q:"Can you `await` in a switch case?",a:["No, sync only","Yes, inside async function","Only default case","Only with break"],c:1,e:"await works anywhere inside an async function."},
-  {q:"Output?\nasync function test(){\n  let x=0; setTimeout(()=>x=1,0);\n  await Promise.resolve();\n  console.log(x);\n}\ntest();",a:["0","1","undefined","Error"],c:0,e:"await Promise.resolve() = microtask. setTimeout = macrotask. Microtasks run first."},
-  {q:"What is 'slow' vs 'fast' path in await?",a:["Fast skips event loop","Fast uses Workers","Engines optimize resolved Promises but spec requires microtask","No difference"],c:2,e:"Spec-compliant behavior always involves microtask queue."},
-  {q:"Can `await` be used in class field initializer?",a:["Yes: class A { x=await 5; }","No, fields aren't async","Only static fields in modules","Only TypeScript"],c:1,e:"Field initializers are not async contexts."},
-  {q:"Output?\nconst obj={ async value(){ return 42; } };\nconsole.log(await obj.value());",a:["Promise {42}","42","undefined","Error"],c:1,e:"Object methods can be async. await unwraps to 42."},
-  {q:"Can you `await` inside a while loop?",a:["No","Yes, each iteration waits","Only do..while","Only with break"],c:1,e:"while with await is common for polling."},
-  {q:"Danger of `while(true){ await something(); }`?",a:["Blocks main thread","Infinite async loop without break","Crashes browser","Prevents other microtasks"],c:1,e:"Yields each iteration but runs forever without termination."},
-  {q:"Can you `await` inside a `with` statement?",a:["No, banned","Yes, though with is deprecated","Only non-strict","Only browsers"],c:1,e:"with is deprecated but works. await works inside it."},
-  {q:"What does `await Promise.resolve().then(()=>Promise.resolve(2))` resolve to?",a:["Promise {2}","2","undefined","throws"],c:1,e:"await recursively unwraps Promises to the final value."},
-  {q:"Why can't useEffect callback be directly async in React?",a:["React doesn't support async","useEffect expects cleanup fn, not Promise","Causes infinite re-renders","Hooks can't use await"],c:1,e:"Async fn returns Promise but useEffect needs cleanup function."},
-  {q:"Correct React async in useEffect pattern?",a:["useEffect(async()=>{},[])","useEffect(()=>{ const load=async()=>{...}; load(); },[])","useEffect(()=>await fetch(),[])","async useEffect(()=>{},[])"],c:1,e:"Define inner async function and invoke it inside effect."},
-  {q:"Express async route throws without try/catch?",a:["Express catches auto","Request hangs, error unhandled","Sends 500 auto","Server restarts"],c:1,e:"Express 4 doesn't catch async errors automatically."},
-  {q:"Correct Express async error handling?",a:["try/catch + next(err)","Don't use async","Use .then()","app.asyncGet"],c:0,e:"Explicitly catch and pass to next(err)."},
-  {q:"TypeScript return type of async function foo(): Promise<string>?",a:["string","Promise<string>","AsyncFunction<string>","Promise<Promise<string>>"],c:1,e:"Must declare Promise<string> even though you return a string."},
-  {q:"TypeScript: extract resolved type from async function?",a:["ReturnType<typeof fn>","Awaited<ReturnType<typeof fn>>","Resolved<typeof fn>","Unwrap<typeof fn>"],c:1,e:"Awaited<T> (TS 4.5+) unwraps Promise types."},
-  {q:"Can Mongoose queries be awaited directly?",a:["No, need .exec()","Yes, modern queries are thenable","Only .then()","Only aggregation"],c:1,e:"Modern Mongoose queries work with await."},
-  {q:"What is Promise.withResolvers() (ES2024)?",a:["Create Promise with external resolve/reject","Replace async/await","Cancel Promises","Performance optimization"],c:0,e:"Returns {promise, resolve, reject} for external resolution."},
-  {q:"What does util.promisify do?",a:["Makes any fn async","Converts callback (err,result) to Promise-based","Creates delay Promise","Wraps in try/catch"],c:1,e:"Follows Node.js callback convention."},
-  {q:"Danger of awaiting inside reduce accumulator?",a:["reduce doesn't support async properly","Runs too fast","Stack overflow","reduce deprecated"],c:0,e:"Requires accumulator to be Promise chain. Tricky."},
-  {q:"Correct sequential async reduce?",a:["reduce with async","for..of loop","map then reduce","Promise.all then reduce"],c:1,e:"for..of is clearer and more reliable."},
-  {q:"Can you await inside JSON.stringify?",a:["Yes","No, stringify is sync","Only custom replacer","Only thenables"],c:1,e:"JSON.stringify is fully synchronous."},
-  {q:"Can you await inside JSON.parse reviver?",a:["Parses async JSON","Reviver is sync; await invalid","Converts to Promises","Works in modern browsers"],c:1,e:"Reviver is called synchronously."},
-  {q:"Primary benefit of async/await over .then() chains?",a:["Faster","Less memory","Reads like sync code, better stack traces","True multithreading"],c:2,e:"Readability and debugging are the wins. Performance is identical."},
-  {q:"Single most important rule of async/await in production?",a:["Always use var","Never await in loops","Always handle errors and never await in forEach","Always return await values"],c:2,e:"Unhandled rejections crash apps. forEach with async is the #1 bug source."}
+
+// ============================================================
+//  CONSTANTS
+// ============================================================
+const CATEGORIES = {
+  fundamentals: 'Fundamentals',
+  eventloop: 'Event Loop',
+  errors: 'Errors',
+  patterns: 'Patterns',
+  advanced: 'Advanced'
+};
+
+const DEFAULT_DB = [
+  {q:"What does the `async` keyword do to a function?",a:["It makes the function execute faster","It forces the function to always return a Promise","It runs the function on a separate thread","It prevents the function from throwing errors"],c:1,e:"An `async function` implicitly wraps its return value in a Promise.",cat:"fundamentals"},
+  {q:"What is the result of `await 42` inside an async function?",a:["Promise.resolve(42)","undefined","42","TypeError"],c:2,e:"`await` wraps non-promises in Promise.resolve(), so await 42 resolves to 42.",cat:"fundamentals"},
+  {q:"Can you use `await` inside a regular (non-async) function?",a:["Yes, in all modern browsers","No, never","Only inside modules at the top level (ES2022+)","Only inside forEach callbacks"],c:2,e:"Top-level await is allowed in ES modules. Inside regular functions, await requires the async keyword.",cat:"fundamentals"},
+  {q:"What does this code output?\nasync function test() { return 1; }\nconsole.log(test());",a:["1","undefined","Promise {<fulfilled>: 1}","throws"],c:2,e:"Async functions always return a Promise, not the raw value.",cat:"fundamentals"},
+  {q:"What happens if an async function throws an error?",a:["Crashes immediately","Returns a rejected Promise","Error is silently ignored","Returns undefined"],c:1,e:"Throwing inside an async function equals returning Promise.reject(error).",cat:"fundamentals"},
+  {q:"Which is valid syntax?",a:["async const fn = () => {}","const fn = async () => {}","const async fn = () => {}","const fn = () => async {}"],c:1,e:"The async keyword goes before the arrow function or function declaration.",cat:"fundamentals"},
+  {q:"What is async/await primarily syntactic sugar for?",a:["Callbacks","Generators","Promises","Web Workers"],c:2,e:"async/await is built on top of the Promise API.",cat:"fundamentals"},
+  {q:"Does `await` block the JavaScript main thread?",a:["Yes, completely","No, only pauses the async function","Yes, but only microtasks","Only in Node.js"],c:1,e:"The async function yields control back to the event loop.",cat:"fundamentals"},
+  {q:"What is the output order?\nconsole.log(1);\nsetTimeout(()=>console.log(2),0);\nPromise.resolve().then(()=>console.log(3));\nconsole.log(4);",a:["1,2,3,4","1,4,3,2","1,4,2,3","1,3,4,2"],c:1,e:"Sync first (1,4), then microtasks (3), then macrotasks (2).",cat:"eventloop"},
+  {q:"What does `return await promise` do vs `return promise`?",a:["Identical in all cases","return await is faster","return await allows catching rejection in try/catch","return promise unwraps automatically"],c:2,e:"Inside try/catch, return await lets you intercept the error before returning.",cat:"fundamentals"},
+  {q:"Which statement about `await` is FALSE?",a:["Works with any thenable","Can be used multiple times","Converts sync code to Web Worker","Pauses until Promise settles"],c:2,e:"await has nothing to do with Web Workers.",cat:"fundamentals"},
+  {q:"What is the type of an async arrow function?",a:["Function","AsyncFunction","Promise","GeneratorFunction"],c:1,e:"Async functions are instances of AsyncFunction, a subclass of Function.",cat:"fundamentals"},
+  {q:"Can a class constructor be `async`?",a:["Yes, natively","No, constructors cannot be async","Only in TypeScript","Only if extends Promise"],c:1,e:"Use a static factory method instead.",cat:"advanced"},
+  {q:"What does this return?\nasync function test(){ return Promise.resolve(10); }\ntest().then(x=>console.log(x));",a:["Promise pending","10","undefined","throws"],c:1,e:"Returning a Promise from async doesn't double-wrap; it resolves to the inner value.",cat:"fundamentals"},
+  {q:"Where is top-level `await` NOT allowed?",a:["ES modules in browsers","ES modules in Node.js","Regular browser scripts","Inside async functions"],c:2,e:"Regular non-module scripts don't support top-level await.",cat:"advanced"},
+  {q:"What happens if you call an async function but don't await or .then() it?",a:["Doesn't execute","Executes but Promise is ignored","Executes synchronously","Auto-awaits itself"],c:1,e:"The function runs, but you won't know when it finishes or if it errors.",cat:"fundamentals"},
+  {q:"Which makes an object method async?",a:["{ function async method(){} }","{ async method(){} }","{ method: async function(){} }","Both B and C"],c:3,e:"Both async method(){} and method: async function(){} are valid.",cat:"fundamentals"},
+  {q:"What is the output?\nconst x = async () => 5;\nconst y = async () => { 5; };\nconsole.log(await x(), await y());",a:["5 5","5 undefined","undefined undefined","SyntaxError"],c:1,e:"Arrow functions with braces need explicit return. Without it, y returns undefined.",cat:"fundamentals"},
+  {q:"Can `await` be used inside a `switch` in an async function?",a:["No","Yes, anywhere inside async","Only in default case","Only with Promise.all"],c:1,e:"await can appear anywhere inside an async function.",cat:"fundamentals"},
+  {q:"What does `await` do if the Promise is already resolved?",a:["Waits one tick","Continues synchronously","Yields to microtask queue","Throws error"],c:2,e:"Even if resolved, await schedules continuation as a microtask per spec.",cat:"eventloop"},
+  {q:"What is the output order?\nconsole.log(1); setTimeout(()=>console.log(2),0); Promise.resolve().then(()=>console.log(3)); console.log(4);",a:["1,2,3,4","1,4,3,2","1,4,2,3","1,3,4,2"],c:1,e:"Sync (1,4), microtasks (3), macrotasks (2).",cat:"eventloop"},
+  {q:"What happens here?\nasync function test(){ await 1; await 2; await 3; }\ntest(); console.log('done');",a:["done after awaits","done first, async completes in background","blocks until done","done between each await"],c:1,e:"test() returns immediately. done logs synchronously. Awaits resolve via microtasks.",cat:"eventloop"},
+  {q:"In what queue do `await` continuations run?",a:["Macrotask","Microtask","Callback","Render"],c:1,e:"await schedules in the microtask queue.",cat:"eventloop"},
+  {q:"Output?\nasync function a(){ console.log('a'); }\nasync function b(){ await a(); console.log('b'); }\nb(); console.log('c');",a:["a,b,c","a,c,b","c,a,b","b,a,c"],c:1,e:"a() logs sync. await in b yields, so c logs. Then b resumes via microtask.",cat:"eventloop"},
+  {q:"If you `await` inside a `for` loop, how do iterations execute?",a:["All in parallel","Sequentially, one after another","Loop throws","Only first runs"],c:1,e:"Each await pauses the loop body. Iterations complete in order.",cat:"patterns"},
+  {q:"How to make loop iterations run in parallel?",a:["for..of with await","forEach with async","Promise.all(arr.map(async x=>await f(x)))","Cannot run in parallel"],c:2,e:"Promise.all with map fires all Promises simultaneously.",cat:"patterns"},
+  {q:"What is wrong with this?\n[1,2,3].forEach(async x=>{ await delay(100); console.log(x); });\nconsole.log('done');",a:["forEach doesn't exist","forEach ignores returned Promises","await not allowed in callbacks","prints done after numbers"],c:1,e:"forEach fires callbacks immediately and doesn't await them. done prints first.",cat:"patterns"},
+  {q:"What does `Promise.all()` return?",a:["First resolved value","Promise resolving with array of all values","Array of Promises","Last resolved value"],c:1,e:"Resolves with [result1, result2, ...] when all inputs resolve.",cat:"patterns"},
+  {q:"What if one Promise in `Promise.all()` rejects?",a:["Others auto-cancel","Promise.all immediately rejects","Waits for rest, returns partial","Resolves with undefined for rejected"],c:1,e:"Promise.all is fail-fast — one rejection rejects the whole thing.",cat:"patterns"},
+  {q:"Which waits for ALL Promises regardless of resolve/reject?",a:["Promise.all","Promise.race","Promise.allSettled","Promise.any"],c:2,e:"Promise.allSettled never rejects. Returns {status, value} or {status, reason}.",cat:"patterns"},
+  {q:"What does `Promise.race()` do?",a:["Returns all results","Returns/rejects when FIRST settles","Returns first resolve only","Cancels slower"],c:1,e:"Settles as soon as any one input Promise settles.",cat:"patterns"},
+  {q:"What does `Promise.any()` do?",a:["Same as race","First resolve; ignores rejections unless ALL reject","All results like all","Random result"],c:1,e:"Promise.any is 'first success' — only rejects if every input rejects.",cat:"patterns"},
+  {q:"Output?\nconst p=new Promise(r=>setTimeout(r,0,'timeout'));\nconst q=Promise.resolve('instant');\nconsole.log(await Promise.race([p,q]));",a:["timeout","instant","undefined","throws"],c:1,e:"q is already resolved, so it wins immediately.",cat:"patterns"},
+  {q:"Can `await` cause a memory leak?",a:["No, auto GC'd","Yes, if holding large objects while waiting","Only in IE","Only with Promise.all"],c:1,e:"Long-running async functions holding closures over large data prevent GC.",cat:"advanced"},
+  {q:"What is 'zalgo' in async programming?",a:["A testing library","Function that callbacks sync AND async unpredictably","Promise race condition","V8 flag"],c:1,e:"async/await prevents zalgo because await always yields.",cat:"advanced"},
+  {q:"How do you catch a rejected Promise with `await`?",a:[".catch() only","try/catch around the await","if (await promise === false)","await cannot catch"],c:1,e:"try/catch around await catches rejections like sync exceptions.",cat:"errors"},
+  {q:"What happens to an uncaught error in an async function?",a:["Unhandled Promise rejection","Crashes immediately","Silently swallowed","Converts to warning"],c:0,e:"Uncaught rejections become unhandled Promise rejections.",cat:"errors"},
+  {q:"Output?\nasync function test(){\n  try{ await Promise.reject('err'); }\n  catch(e){ console.log('caught'); }\n}\ntest();",a:["Uncaught error","caught","undefined","Nothing"],c:1,e:"try/catch properly catches awaited rejections.",cat:"errors"},
+  {q:"Problem with this Express middleware?\napp.get('/', async(req,res)=>{\n  const data=await db.query(); res.json(data);\n});",a:["await used wrong","Unhandled rejections crash/hang","res.json can't use await","Express doesn't support async"],c:1,e:"Without try/catch or next(err), errors hang the client.",cat:"errors"},
+  {q:"Correct Express async error pattern?",a:["try/catch + next(err)","Don't use async in Express","Use .then() instead","Add return before res.json"],c:0,e:"Catch errors and pass to next(err) in Express 4.",cat:"errors"},
+  {q:"Does `fetch()` throw on HTTP 404 or 500?",a:["Yes, always","No, only rejects on network failure","Only on 500","Returns null"],c:1,e:"fetch resolves on HTTP errors. Check response.ok manually.",cat:"errors"},
+  {q:"Correct fetch error pattern with await?",a:["try/catch is enough","Check if (!response.ok) throw new Error","fetch auto-throws on 404","Use response.catch()"],c:1,e:"fetch resolves even on 404/500. Manual ok checking required.",cat:"errors"},
+  {q:"What does `finally` do in async try/catch/finally?",a:["Only on success","Only on error","Runs regardless of outcome","Prevents error propagation"],c:2,e:"finally executes whether await succeeded or failed.",cat:"errors"},
+  {q:"Throw inside `finally` block?",a:["Original error preserved","finally error overrides previous","Nothing special","Creates never-settling Promise"],c:1,e:"A throw in finally masks any previous return or error.",cat:"errors"},
+  {q:"Can you `await` inside a `catch` block?",a:["No, must be sync","Yes, for fallback async ops","Only in Node.js","Only with Promise.all"],c:1,e:"catch blocks in async functions can use await.",cat:"errors"},
+  {q:"What is an unhandled promise rejection?",a:["Takes too long to resolve","Rejected Promise with no catch attached","Rejected by browser","Syntax error"],c:1,e:"Any rejected Promise not handled becomes unhandled.",cat:"errors"},
+  {q:"How to add timeout to an await?",a:["await timeout(op, 5000)","Promise.race([op, new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),5000))])","await op({timeout:5000})","setTimeout(()=>await op,5000)"],c:1,e:"Race the operation against a delayed rejection.",cat:"patterns"},
+  {q:"Difference: return await promise vs return promise?",a:["A is faster","B handles errors better","In try/catch, A catches errors; B does not","Identical in all contexts"],c:2,e:"return await lets you catch rejection inside try/catch.",cat:"errors"},
+  {q:"Can catch block be followed by .catch() on same async function?",a:["Mutually exclusive","Yes if inner catch re-throws","No, catch consumes all","Only in strict mode"],c:1,e:"If you re-throw, outer .catch() can still fire.",cat:"errors"},
+  {q:"What does Promise.allSettled return for rejection?",a:["Throws immediately","{status:'rejected', reason:error}","{status:'failed', error:error}","undefined"],c:1,e:"Returns {status, reason} for rejections.",cat:"patterns"},
+  {q:"Output?\nasync function test(){\n  const arr=[1,2,3];\n  arr.forEach(async x=>{ await Promise.resolve(); console.log(x); });\n  console.log('done');\n}\ntest();",a:["1,2,3,done","done,1,2,3","done then 1,2,3 in order","done then 1,2,3 unpredictably"],c:3,e:"forEach doesn't await. done prints first. Numbers via microtasks.",cat:"eventloop"},
+  {q:"Correct sequential array processing?",a:["forEach with async","for..of with await","map with async","while pop"],c:1,e:"for..of with await waits for each iteration.",cat:"patterns"},
+  {q:"What is the 'async constructor' anti-pattern?",a:["async constructor()","new on async function","await in class body","return this from constructor"],c:0,e:"Constructors cannot be async. Use static factory.",cat:"patterns"},
+  {q:"How to fix async constructor?",a:["async init() after new","static async factory","Both valid","constructor returning async fn"],c:2,e:"Either init() pattern or static async create() works.",cat:"patterns"},
+  {q:"What is an async IIFE for?",a:["Create module","Use await at top level of non-module script","Make functions faster","Replace Promise.all"],c:1,e:"(async()=>{ await x(); })(); enables top-level await in scripts.",cat:"patterns"},
+  {q:"What is 'fire and forget'?",a:["Uncancellable Promise","Call async fn without await/catch","Fn returns immediately","Memory leak"],c:1,e:"Starting async op but ignoring result/errors. Dangerous.",cat:"patterns"},
+  {q:"What's wrong with fire and forget?",a:["Makes code slower","Errors become unhandled rejections","Blocks main thread","Prevents GC"],c:1,e:"If operation rejects with no listener, it's unhandled.",cat:"errors"},
+  {q:"How to promisify fs.readFile in Node.js?",a:["Promise(fs.readFile)","util.promisify(fs.readFile)","fs.readFile.async()","Promise.wrap(fs.readFile)"],c:1,e:"util.promisify converts callback-style to Promise-based.",cat:"advanced"},
+  {q:"What does `for await...of` iterate over?",a:["Regular arrays","Async iterables","Objects","Strings"],c:1,e:"Designed for async iterables like async generators.",cat:"advanced"},
+  {q:"Can you `break` from `for await...of`?",a:["No, syntax error","Yes, calls iterator return() for cleanup","Yes but leaks memory","Only if array"],c:1,e:"break works and triggers cleanup via iterator protocol.",cat:"advanced"},
+  {q:"Async generator syntax?",a:["async function* name(){}","function* async name(){}","async function name*(){}","function async* name(){}"],c:0,e:"async function* defines an async generator.",cat:"advanced"},
+  {q:"Purpose of p-limit libraries?",a:["Make code faster","Limit concurrent async operations","Replace Promise.all","Auto error handling"],c:1,e:"Prevents overwhelming APIs with too many parallel requests.",cat:"advanced"},
+  {q:"Output?\nasync function test(){\n  console.log(await Promise.resolve('A'));\n  console.log(await 'B');\n}\ntest();",a:["A then B","B then A","Simultaneous","Error"],c:0,e:"Both valid. await 'B' wraps in Promise.resolve('B').",cat:"fundamentals"},
+  {q:"Which creates intentional delay?",a:["await null","await new Promise(r=>setTimeout(r,1000))","await undefined","await setTimeout(()=>{},1000)"],c:1,e:"Promisifying setTimeout is the standard sleep pattern.",cat:"patterns"},
+  {q:"What does `const delay=ms=>new Promise(r=>setTimeout(r,ms));` do?",a:["Rejected after delay","Resolved after delay","Pauses entire program","Macrotask not awaitable"],c:1,e:"Returns Promise resolving after ms milliseconds.",cat:"patterns"},
+  {q:"Can you `await` inside a ternary?",a:["No","Yes: condition ? await a() : await b()","Only in React","Only with parens"],c:1,e:"await works inside expressions including ternaries.",cat:"fundamentals"},
+  {q:"Issue with await in Array.map without Promise.all?",a:["map doesn't exist","Array of Promises, not values","Throws immediately","Runs sequentially"],c:1,e:"arr.map(async x=>...) returns Promise array. Need Promise.all.",cat:"patterns"},
+  {q:"Output?\nconst results=[1,2,3].map(async x=>x*2);\nconsole.log(results);",a:["[2,4,6]","[Promise,Promise,Promise]","undefined","Error"],c:1,e:"Async callback makes each element a Promise.",cat:"patterns"},
+  {q:"How to get actual values from above?",a:["results.map(r=>r.then(v=>v))","await Promise.all(results)","results.await()","await results"],c:1,e:"Promise.all waits for all and returns values.",cat:"patterns"},
+  {q:"What is an async mutex for?",a:["Encrypt async data","Ensure one async op accesses resource at a time","Speed up async","Cancel Promises"],c:1,e:"Prevents race conditions in concurrent async code.",cat:"advanced"},
+  {q:"Can you `await` a thenable?",a:["No, only native Promises","Yes, any object with .then()","Only in Node.js","Only if extends Promise"],c:1,e:"await accepts any thenable via Promise resolution protocol.",cat:"advanced"},
+  {q:"What is a thenable?",a:["Already-resolved Promise","Object with then(resolve,reject) method","Function returning Promise","Async function"],c:1,e:"Thenables are duck-typed Promises.",cat:"advanced"},
+  {q:"Can async functions be recursive?",a:["No, forbidden","Yes, but need base case","Yes, constant stack","Only with TCO"],c:1,e:"Allowed but each call consumes resources. Need base case.",cat:"advanced"},
+  {q:"Are native Promises cancellable?",a:["Yes via .cancel()","No, not cancellable","Only with AbortController","Only in bluebird"],c:1,e:"Native Promises are not cancellable. AbortController cancels operations like fetch.",cat:"advanced"},
+  {q:"What is AbortController for?",a:["Cancel any Promise","Cancel abortable ops like fetch via signals","Restart async fns","Handle all errors"],c:1,e:"Provides a signal that abortable APIs check.",cat:"advanced"},
+  {q:"What happens if you `await undefined`?",a:["ReferenceError","Returns undefined","Waits forever","Returns null"],c:1,e:"Equivalent to await Promise.resolve(undefined).",cat:"fundamentals"},
+  {q:"Can you `await` in a switch case?",a:["No, sync only","Yes, inside async function","Only default case","Only with break"],c:1,e:"await works anywhere inside an async function.",cat:"fundamentals"},
+  {q:"Output?\nasync function test(){\n  let x=0; setTimeout(()=>x=1,0);\n  await Promise.resolve();\n  console.log(x);\n}\ntest();",a:["0","1","undefined","Error"],c:0,e:"await Promise.resolve() = microtask. setTimeout = macrotask. Microtasks run first.",cat:"eventloop"},
+  {q:"What is 'slow' vs 'fast' path in await?",a:["Fast skips event loop","Fast uses Workers","Engines optimize resolved Promises but spec requires microtask","No difference"],c:2,e:"Spec-compliant behavior always involves microtask queue.",cat:"eventloop"},
+  {q:"Can `await` be used in class field initializer?",a:["Yes: class A { x=await 5; }","No, fields aren't async","Only static fields in modules","Only TypeScript"],c:1,e:"Field initializers are not async contexts.",cat:"advanced"},
+  {q:"Output?\nconst obj={ async value(){ return 42; } };\nconsole.log(await obj.value());",a:["Promise {42}","42","undefined","Error"],c:1,e:"Object methods can be async. await unwraps to 42.",cat:"fundamentals"},
+  {q:"Can you `await` inside a while loop?",a:["No","Yes, each iteration waits","Only do..while","Only with break"],c:1,e:"while with await is common for polling.",cat:"patterns"},
+  {q:"Danger of `while(true){ await something(); }`?",a:["Blocks main thread","Infinite async loop without break","Crashes browser","Prevents other microtasks"],c:1,e:"Yields each iteration but runs forever without termination.",cat:"patterns"},
+  {q:"Can you `await` inside a `with` statement?",a:["No, banned","Yes, though with is deprecated","Only non-strict","Only browsers"],c:1,e:"with is deprecated but works. await works inside it.",cat:"fundamentals"},
+  {q:"What does `await Promise.resolve().then(()=>Promise.resolve(2))` resolve to?",a:["Promise {2}","2","undefined","throws"],c:1,e:"await recursively unwraps Promises to the final value.",cat:"fundamentals"},
+  {q:"Why can't useEffect callback be directly async in React?",a:["React doesn't support async","useEffect expects cleanup fn, not Promise","Causes infinite re-renders","Hooks can't use await"],c:1,e:"Async fn returns Promise but useEffect needs cleanup function.",cat:"advanced"},
+  {q:"Correct React async in useEffect pattern?",a:["useEffect(async()=>{},[])","useEffect(()=>{ const load=async()=>{...}; load(); },[])","useEffect(()=>await fetch(),[])","async useEffect(()=>{},[])"],c:1,e:"Define inner async function and invoke it inside effect.",cat:"advanced"},
+  {q:"Express async route throws without try/catch?",a:["Express catches auto","Request hangs, error unhandled","Sends 500 auto","Server restarts"],c:1,e:"Express 4 doesn't catch async errors automatically.",cat:"errors"},
+  {q:"Correct Express async error handling?",a:["try/catch + next(err)","Don't use async","Use .then()","app.asyncGet"],c:0,e:"Explicitly catch and pass to next(err).",cat:"errors"},
+  {q:"TypeScript return type of async function foo(): Promise<string>?",a:["string","Promise<string>","AsyncFunction<string>","Promise<Promise<string>>"],c:1,e:"Must declare Promise<string> even though you return a string.",cat:"advanced"},
+  {q:"TypeScript: extract resolved type from async function?",a:["ReturnType<typeof fn>","Awaited<ReturnType<typeof fn>>","Resolved<typeof fn>","Unwrap<typeof fn>"],c:1,e:"Awaited<T> (TS 4.5+) unwraps Promise types.",cat:"advanced"},
+  {q:"Can Mongoose queries be awaited directly?",a:["No, need .exec()","Yes, modern queries are thenable","Only .then()","Only aggregation"],c:1,e:"Modern Mongoose queries work with await.",cat:"advanced"},
+  {q:"What is Promise.withResolvers() (ES2024)?",a:["Create Promise with external resolve/reject","Replace async/await","Cancel Promises","Performance optimization"],c:0,e:"Returns {promise, resolve, reject} for external resolution.",cat:"advanced"},
+  {q:"What does util.promisify do?",a:["Makes any fn async","Converts callback (err,result) to Promise-based","Creates delay Promise","Wraps in try/catch"],c:1,e:"Follows Node.js callback convention.",cat:"advanced"},
+  {q:"Danger of awaiting inside reduce accumulator?",a:["reduce doesn't support async properly","Runs too fast","Stack overflow","reduce deprecated"],c:0,e:"Requires accumulator to be Promise chain. Tricky.",cat:"patterns"},
+  {q:"Correct sequential async reduce?",a:["reduce with async","for..of loop","map then reduce","Promise.all then reduce"],c:1,e:"for..of is clearer and more reliable.",cat:"patterns"},
+  {q:"Can you await inside JSON.stringify?",a:["Yes","No, stringify is sync","Only custom replacer","Only thenables"],c:1,e:"JSON.stringify is fully synchronous.",cat:"fundamentals"},
+  {q:"Can you await inside JSON.parse reviver?",a:["Parses async JSON","Reviver is sync; await invalid","Converts to Promises","Works in modern browsers"],c:1,e:"Reviver is called synchronously.",cat:"fundamentals"},
+  {q:"Primary benefit of async/await over .then() chains?",a:["Faster","Less memory","Reads like sync code, better stack traces","True multithreading"],c:2,e:"Readability and debugging are the wins. Performance is identical.",cat:"fundamentals"},
+  {q:"Single most important rule of async/await in production?",a:["Always use var","Never await in loops","Always handle errors and never await in forEach","Always return await values"],c:2,e:"Unhandled rejections crash apps. forEach with async is the #1 bug source.",cat:"errors"}
 ];
 
-// ===================== STATE =====================
-var DB = [];
-var cur = [], idx = 0, wrong = [], answered = false;
-var sessionHistory = [];
+// ============================================================
+//  UTILITY CLASSES
+// ============================================================
 
-// ===================== LOCALSTORAGE =====================
-function loadStorage(){
-  try {
-    var saved = localStorage.getItem('quiz_custom_db');
-    if(saved) { DB = JSON.parse(saved); }
-    else { DB = DEFAULT_DB.slice(); }
-    var hist = localStorage.getItem('quiz_history');
-    if(hist) sessionHistory = JSON.parse(hist);
-    updateBankInfo();
-    updateDailyStats();
-  } catch(e) { DB = DEFAULT_DB.slice(); }
-}
-
-function saveDB(){ localStorage.setItem('quiz_custom_db', JSON.stringify(DB)); }
-function saveHistory(){ localStorage.setItem('quiz_history', JSON.stringify(sessionHistory)); }
-
-function getStats(){
-  var s = localStorage.getItem('quiz_stats');
-  return s ? JSON.parse(s) : {streak:0, lastDate:'', today:0, total:0, correct:0};
-}
-function saveStats(s){ localStorage.setItem('quiz_stats', JSON.stringify(s)); }
-
-// ===================== SYNTAX HIGHLIGHTER =====================
-function escapeHtml(text){
-  return String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-function highlightJS(code){
-  var html = escapeHtml(code);
-  html = html.replace(/(\/\/.*$)/gm, '<span class="tok-comment">$1</span>');
-  html = html.replace(/(&quot;.*?&quot;|&#039;.*?&#039;|`.*?`)/g, '<span class="tok-str">$1</span>');
-  html = html.replace(/\b(async|await|function|return|const|let|var|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|new|this|class|extends|static|import|export|from|default|typeof|instanceof|in|of|void|delete|yield)\b/g, '<span class="tok-kw">$1</span>');
-  html = html.replace(/\b(true|false|null|undefined|Infinity|NaN)\b/g, '<span class="tok-bool">$1</span>');
-  html = html.replace(/\b(\d+)\b/g, '<span class="tok-num">$1</span>');
-  html = html.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g, '<span class="tok-func">$1</span>(');
-  html = html.replace(/(=&gt;|===|!==|==|!=|&lt;=|&gt;=|&lt;|&gt;|\+\+|--|&&|\|\||\?|:|\+|-|\*|\/|%|=)/g, '<span class="tok-op">$1</span>');
-  return html;
-}
-
-function formatCodeBlock(code){
-  var lines = code.split('\n');
-  var html = '<div class="code-block"><div class="code-header"><div class="code-dots"><span class="cd-r"></span><span class="cd-y"></span><span class="cd-g"></span></div><span>javascript</span></div><div class="code-body" style="counter-reset:line;">';
-  lines.forEach(function(line){
-    var highlighted = highlightJS(line);
-    html += '<span class="ln">' + (highlighted || '&nbsp;') + '</span>';
-  });
-  html += '</div></div>';
-  return html;
-}
-
-// ===================== DOM HELPERS =====================
-function $(id){ return document.getElementById(id); }
-function show(id, on){ $(id).classList.toggle('hide', !on); }
-
-function shuf(a){
-  var b = a.slice();
-  for(var i=b.length-1;i>0;i--){
-    var j = Math.floor(Math.random()*(i+1));
-    var t=b[i]; b[i]=b[j]; b[j]=t;
-  }
-  return b;
-}
-
-function parseR(s){ var p=s.split('-'); return {s:+p[0], e:+p[1]}; }
-
-// ===================== BANK INFO =====================
-function updateBankInfo(){
-  $('bi-total').textContent = DB.length;
-}
-
-// ===================== DAILY STATS =====================
-function updateDailyStats(){
-  var stats = getStats();
-  var today = new Date().toDateString();
-  if(stats.lastDate !== today){
-    stats.today = 0;
-    if(stats.lastDate){
-      var last = new Date(stats.lastDate);
-      var now = new Date(today);
-      var diff = Math.round((now - last) / (1000*60*60*24));
-      if(diff > 1) stats.streak = 0;
-      else if(diff === 1) stats.streak++;
+class Utils {
+  static shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
-    stats.lastDate = today;
-    saveStats(stats);
+    return a;
   }
-  var acc = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
-  $('ds-streak').textContent = stats.streak;
-  $('ds-today').textContent = stats.today;
-  $('ds-total-ans').textContent = stats.total;
-  $('ds-acc').textContent = acc + '%';
-  if(stats.streak > 0){
-    $('streak-display').textContent = '\uD83D\uDD25 STREAK: ' + stats.streak + ' DAYS';
-  } else {
-    $('streak-display').textContent = '';
+
+  static escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  static parseRange(str) {
+    const [s, e] = str.split('-').map(Number);
+    return { start: s, end: e };
+  }
+
+  static todayKey() {
+    return new Date().toDateString();
   }
 }
 
-function recordSession(total, correct){
-  var stats = getStats();
-  stats.today += total;
-  stats.total += total;
-  stats.correct += correct;
-  saveStats(stats);
-  sessionHistory.unshift({
-    date: new Date().toLocaleString(),
-    range: $('sel-range').value,
-    total: total,
-    correct: correct,
-    score: Math.round((correct/total)*100) + '%'
-  });
-  if(sessionHistory.length > 50) sessionHistory.pop();
-  saveHistory();
-  updateDailyStats();
+// ============================================================
+//  SYNTAX HIGHLIGHTER (Safe: placeholder protection)
+// ============================================================
+
+class SyntaxHighlighter {
+  static highlight(code) {
+    let html = Utils.escapeHtml(code);
+    const placeholders = [];
+    let ph = 0;
+
+    const protect = (regex, className) => {
+      html = html.replace(regex, (match) => {
+        placeholders[ph] = `<span class="${className}">${match}</span>`;
+        return `___PH${ph++}___`;
+      });
+    };
+
+    // Protect comments and strings FIRST
+    protect(/\/\/.*$/gm, 'tok-comment');
+    protect(/&quot;.*?&quot;/g, 'tok-str');
+    protect(/&#039;.*?&#039;/g, 'tok-str');
+    protect(/`.*?`/g, 'tok-str');
+
+    // Safe to highlight — never matches inside our own HTML tags
+    html = html.replace(/\b(async|await|function|return|const|let|var|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|new|this|class|extends|static|import|export|from|default|typeof|instanceof|in|of|void|delete|yield)\b/g, '<span class="tok-kw">$1</span>');
+    html = html.replace(/\b(true|false|null|undefined|Infinity|NaN)\b/g, '<span class="tok-bool">$1</span>');
+    html = html.replace(/\b(\d+)\b/g, '<span class="tok-num">$1</span>');
+    html = html.replace(/\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g, '<span class="tok-func">$1</span>(');
+    html = html.replace(/(=&gt;|===|!==|==|!=|&lt;=|&gt;=|&lt;|&gt;|\+\+|--|&&|\|\||\?|:|\+|-|\*|\/|%|=)/g, '<span class="tok-op">$1</span>');
+
+    // Restore protected content
+    html = html.replace(/___PH(\d+)___/g, (_, i) => placeholders[+i]);
+    return html;
+  }
+
+  static formatBlock(code) {
+    const lines = code.split('\n');
+    let body = '<div class="code-body" style="counter-reset:line;">';
+    lines.forEach(line => {
+      const highlighted = this.highlight(line);
+      body += `<span class="ln">${highlighted || '&nbsp;'}</span>`;
+    });
+    body += '</div>';
+    return `
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span class="cd-r"></span><span class="cd-y"></span><span class="cd-g"></span></div>
+          <span>javascript</span>
+        </div>
+        ${body}
+      </div>`;
+  }
 }
 
-// ===================== FILE UPLOAD =====================
-var dropZone = $('file-drop');
-var fileInput = $('file-input');
+// ============================================================
+//  STORAGE MANAGER (Namespaced localStorage)
+// ============================================================
 
-dropZone.addEventListener('click', function(){ fileInput.click(); });
-dropZone.addEventListener('dragover', function(e){ e.preventDefault(); this.classList.add('dragover'); });
-dropZone.addEventListener('dragleave', function(){ this.classList.remove('dragover'); });
-dropZone.addEventListener('drop', function(e){ e.preventDefault(); this.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
-fileInput.addEventListener('change', function(){ if(this.files[0]) handleFile(this.files[0]); });
+class StorageManager {
+  static NS = 'quiz_v3_';
 
-function handleFile(file){
-  if(!file || !file.name.endsWith('.json')){ alert('[ERROR] Only .json files accepted.'); return; }
-  var reader = new FileReader();
-  reader.onload = function(e){
+  static get(key, fallback = null) {
     try {
-      var data = JSON.parse(e.target.result);
-      if(!Array.isArray(data) || data.length === 0){ alert('[ERROR] Invalid format. Must be a non-empty array.'); return; }
-      for(var i=0;i<Math.min(data.length,5);i++){
-        if(!data[i].q || !data[i].a || typeof data[i].c !== 'number' || !data[i].e){
-          alert('[ERROR] Invalid question format at index ' + i); return;
+      const raw = localStorage.getItem(this.NS + key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch { return fallback; }
+  }
+
+  static set(key, value) {
+    localStorage.setItem(this.NS + key, JSON.stringify(value));
+  }
+
+  static remove(key) {
+    localStorage.removeItem(this.NS + key);
+  }
+}
+
+// ============================================================
+//  QUESTION BANK
+// ============================================================
+
+class QuestionBank {
+  constructor() {
+    this.questions = this.load();
+  }
+
+  load() {
+    const custom = StorageManager.get('custom_db');
+    if (custom && Array.isArray(custom) && custom.length > 0) return custom;
+    return DEFAULT_DB.map((q, i) => ({ ...q, id: i + 1 }));
+  }
+
+  save() {
+    StorageManager.set('custom_db', this.questions);
+  }
+
+  reset() {
+    this.questions = DEFAULT_DB.map((q, i) => ({ ...q, id: i + 1 }));
+    this.save();
+  }
+
+  import(data) {
+    if (!Array.isArray(data) || data.length === 0) throw new Error('Must be a non-empty array');
+    for (let i = 0; i < Math.min(data.length, 5); i++) {
+      const q = data[i];
+      if (!q.q || !Array.isArray(q.a) || q.a.length !== 4 || typeof q.c !== 'number' || !q.e) {
+        throw new Error(`Invalid format at index ${i}`);
+      }
+    }
+    this.questions = data.map((q, i) => ({
+      ...q,
+      id: i + 1,
+      cat: q.cat || 'fundamentals'
+    }));
+    this.save();
+  }
+
+  export() {
+    return this.questions.map(({ id, ...rest }) => rest);
+  }
+
+  getByRange(start, end) {
+    return this.questions.filter(q => q.id >= start && q.id <= end);
+  }
+
+  getCounts() {
+    const counts = { total: this.questions.length };
+    Object.keys(CATEGORIES).forEach(k => counts[k] = 0);
+    this.questions.forEach(q => {
+      if (counts[q.cat] !== undefined) counts[q.cat]++;
+      else counts.fundamentals++;
+    });
+    return counts;
+  }
+}
+
+// ============================================================
+//  STATS TRACKER
+// ============================================================
+
+class StatsTracker {
+  constructor() {
+    this.stats = StorageManager.get('stats', {
+      streak: 0, lastDate: '', today: 0, total: 0, correct: 0, perQuestion: {}
+    });
+    this.history = StorageManager.get('history', []);
+    this.maintainStreak();
+  }
+
+  maintainStreak() {
+    const today = Utils.todayKey();
+    if (this.stats.lastDate !== today) {
+      if (this.stats.lastDate) {
+        const last = new Date(this.stats.lastDate);
+        const now = new Date(today);
+        const diff = Math.round((now - last) / (1000 * 60 * 60 * 24));
+        if (diff > 1) this.stats.streak = 0;
+        else if (diff === 1) this.stats.streak++;
+      }
+      this.stats.today = 0;
+      this.stats.lastDate = today;
+      this.saveStats();
+    }
+  }
+
+  get accuracy() {
+    return this.stats.total > 0 ? Math.round((this.stats.correct / this.stats.total) * 100) : 0;
+  }
+
+  recordSession(total, correct, range, perQuestionResults) {
+    this.stats.today += total;
+    this.stats.total += total;
+    this.stats.correct += correct;
+
+    if (!this.stats.perQuestion) this.stats.perQuestion = {};
+    perQuestionResults.forEach(r => {
+      const id = r.id;
+      if (!this.stats.perQuestion[id]) {
+        this.stats.perQuestion[id] = { attempts: 0, correct: 0, streak: 0 };
+      }
+      this.stats.perQuestion[id].attempts++;
+      if (r.isCorrect) {
+        this.stats.perQuestion[id].correct++;
+        this.stats.perQuestion[id].streak++;
+      } else {
+        this.stats.perQuestion[id].streak = 0;
+      }
+    });
+
+    this.saveStats();
+
+    this.history.unshift({
+      date: new Date().toLocaleString(),
+      range: range,
+      total: total,
+      correct: correct,
+      score: Math.round((correct / total) * 100) + '%'
+    });
+    if (this.history.length > 50) this.history.pop();
+    StorageManager.set('history', this.history);
+  }
+
+  saveStats() {
+    StorageManager.set('stats', this.stats);
+  }
+
+  clearHistory() {
+    this.history = [];
+    StorageManager.set('history', []);
+  }
+
+  getCategoryAccuracy() {
+    const cats = {};
+    Object.keys(CATEGORIES).forEach(k => cats[k] = { correct: 0, total: 0 });
+
+    const pq = this.stats.perQuestion || {};
+    Object.entries(pq).forEach(([id, data]) => {
+      const q = DEFAULT_DB[parseInt(id) - 1];
+      if (!q) return;
+      const cat = q.cat || 'fundamentals';
+      if (!cats[cat]) cats[cat] = { correct: 0, total: 0 };
+      cats[cat].correct += data.correct;
+      cats[cat].total += data.attempts;
+    });
+
+    return Object.entries(cats).map(([key, val]) => ({
+      key,
+      name: CATEGORIES[key] || key,
+      pct: val.total > 0 ? Math.round((val.correct / val.total) * 100) : 0,
+      total: val.total
+    }));
+  }
+}
+
+// ============================================================
+//  RENDERER
+// ============================================================
+
+class Renderer {
+  constructor() {
+    this.screens = {
+      setup: document.getElementById('sc-setup'),
+      quiz: document.getElementById('sc-quiz'),
+      result: document.getElementById('sc-result'),
+      history: document.getElementById('sc-history')
+    };
+    this.els = {
+      badge: document.getElementById('badge'),
+      streak: document.getElementById('streak-display'),
+      bankTotal: document.getElementById('bi-total'),
+      bankFund: document.getElementById('bi-fund'),
+      bankLoop: document.getElementById('bi-loop'),
+      bankError: document.getElementById('bi-error'),
+      bankPattern: document.getElementById('bi-pattern'),
+      bankAdvanced: document.getElementById('bi-advanced'),
+      dsStreak: document.getElementById('ds-streak'),
+      dsToday: document.getElementById('ds-today'),
+      dsTotal: document.getElementById('ds-total-ans'),
+      dsAcc: document.getElementById('ds-acc'),
+      qMeta: document.getElementById('q-meta'),
+      qText: document.getElementById('q-text'),
+      qOpts: document.getElementById('q-opts'),
+      qExp: document.getElementById('q-exp'),
+      btnNext: document.getElementById('btn-next'),
+      progBar: document.getElementById('prog-bar'),
+      rCor: document.getElementById('r-cor'),
+      rWrg: document.getElementById('r-wrg'),
+      rPct: document.getElementById('r-pct'),
+      rWsec: document.getElementById('r-wsec'),
+      rWlist: document.getElementById('r-wlist'),
+      rCatSec: document.getElementById('r-catsec'),
+      rCatGrid: document.getElementById('r-catgrid'),
+      btnRetry: document.getElementById('btn-retry'),
+      histTable: document.getElementById('hist-table')
+    };
+  }
+
+  show(screenName) {
+    Object.values(this.screens).forEach(el => el.classList.add('hide'));
+    this.screens[screenName].classList.remove('hide');
+  }
+
+  setBadge(text) { this.els.badge.textContent = text; }
+  setStreak(text) { this.els.streak.textContent = text; }
+
+  updateBankInfo(counts) {
+    this.els.bankTotal.textContent = counts.total;
+    this.els.bankFund.textContent = counts.fundamentals;
+    this.els.bankLoop.textContent = counts.eventloop;
+    this.els.bankError.textContent = counts.errors;
+    this.els.bankPattern.textContent = counts.patterns;
+    this.els.bankAdvanced.textContent = counts.advanced;
+  }
+
+  updateDailyStats(stats, accuracy) {
+    this.els.dsStreak.textContent = stats.streak;
+    this.els.dsToday.textContent = stats.today;
+    this.els.dsTotal.textContent = stats.total;
+    this.els.dsAcc.textContent = accuracy + '%';
+    this.setStreak(stats.streak > 0 ? '\uD83D\uDD25 STREAK: ' + stats.streak + ' DAYS' : '');
+  }
+
+  renderQuestion(q, idx, total) {
+    this.els.qMeta.innerHTML = `&gt;&gt; PACKET <span>${idx + 1}</span> OF <span>${total}</span>  ::  ORIGIN_Q<span>${q.orig}</span>`;
+
+    const text = q.q;
+    const lines = text.split('\n');
+
+    // Multi-line with code keywords = first line is text, rest is code
+    if (lines.length > 1 && /\b(async|await|function|const|let|var|return|if|for|while|console|Promise|setTimeout)\b/.test(text)) {
+      this.els.qText.innerHTML = `<div style="margin-bottom:12px;">${Utils.escapeHtml(lines[0])}</div>${SyntaxHighlighter.formatBlock(lines.slice(1).join('\n'))}`;
+    } else {
+      this.els.qText.textContent = text;
+    }
+
+    this.els.qExp.classList.add('hide');
+    this.els.btnNext.classList.add('hide');
+
+    const box = this.els.qOpts;
+    box.innerHTML = '';
+    q.a.forEach((ans, i) => {
+      const d = document.createElement('div');
+      d.className = 'opt';
+      d.dataset.idx = i;
+      d.innerHTML = `<span class="let">${String.fromCharCode(65 + i)}</span><span>${Utils.escapeHtml(ans)}</span>`;
+      box.appendChild(d);
+    });
+
+    this.updateProgress(idx, total);
+  }
+
+  markAnswer(selectedIdx, correctIdx) {
+    const opts = this.els.qOpts.children;
+    for (let k = 0; k < opts.length; k++) {
+      opts[k].classList.add('dis');
+      if (k === correctIdx) opts[k].classList.add('cor');
+      else if (k === selectedIdx && selectedIdx !== correctIdx) opts[k].classList.add('wrg');
+    }
+  }
+
+  showExplanation(isCorrect, text) {
+    this.els.qExp.innerHTML = `<strong>${isCorrect ? '[ PASS ]' : '[ FAIL ]'}</strong><br>${Utils.escapeHtml(text)}`;
+    this.els.qExp.classList.remove('hide');
+  }
+
+  showNextButton(isLast) {
+    this.els.btnNext.textContent = isLast ? '[ TRANSMIT_REPORT ]' : '[ NEXT_PACKET ]';
+    this.els.btnNext.classList.remove('hide');
+  }
+
+  updateProgress(idx, total) {
+    const pct = total === 0 ? 0 : (idx / total) * 100;
+    this.els.progBar.style.width = pct + '%';
+  }
+
+  renderResults(total, correct, wrong, categoryStats) {
+    const pct = total === 0 ? 0 : Math.round((correct / total) * 100);
+    this.els.rCor.textContent = correct;
+    this.els.rWrg.textContent = wrong.length;
+    this.els.rPct.textContent = pct + '%';
+
+    // Category breakdown
+    const hasStats = categoryStats.some(c => c.total > 0);
+    if (hasStats) {
+      this.els.rCatSec.classList.remove('hide');
+      this.els.rCatGrid.innerHTML = categoryStats.map(c => {
+        const barClass = c.pct >= 80 ? '' : (c.pct >= 50 ? 'mid' : 'low');
+        return `
+          <div class="cat-item">
+            <span class="cat-name">${c.name}</span>
+            <div class="cat-bar"><div class="${barClass}" style="width:${c.pct}%"></div></div>
+            <span class="cat-pct">${c.pct}%</span>
+          </div>`;
+      }).join('');
+    } else {
+      this.els.rCatSec.classList.add('hide');
+    }
+
+    // Wrong answers list
+    this.els.rWsec.classList.remove('hide');
+    if (wrong.length > 0) {
+      this.els.btnRetry.classList.remove('hide');
+      this.els.rWlist.innerHTML = wrong.map(q => `
+        <div class="wit">
+          <div class="wn">[ PACKET_${q.orig} ]</div>
+          <div>${Utils.escapeHtml(q.q.length > 120 ? q.q.slice(0, 120) + '...' : q.q)}</div>
+        </div>`).join('');
+    } else {
+      this.els.btnRetry.classList.add('hide');
+      this.els.rWlist.innerHTML = `
+        <div class="wit ok">
+          <div class="wn" style="color:#3fb950;">[ SYSTEM_INTEGRITY_100% ]</div>
+          <div>All packets verified. No corruption detected.</div>
+        </div>`;
+    }
+  }
+
+  renderHistory(history) {
+    const tbody = this.els.histTable.querySelector('tbody');
+    tbody.innerHTML = history.map(h => `
+      <tr><td>${h.date}</td><td>${h.range}</td><td>${h.total}</td><td>${h.correct}</td><td>${h.score}</td></tr>
+    `).join('') || '<tr><td colspan="5" style="text-align:center;padding:20px;">No sessions yet</td></tr>';
+  }
+}
+
+// ============================================================
+//  KEYBOARD CONTROLLER
+// ============================================================
+
+class KeyboardController {
+  constructor(app) {
+    this.app = app;
+    this.enabled = true;
+    document.addEventListener('keydown', (e) => this.onKey(e));
+  }
+
+  onKey(e) {
+    if (!this.enabled) return;
+
+    // Quiz screen
+    if (!this.app.renderer.screens.quiz.classList.contains('hide')) {
+      if (e.key >= '1' && e.key <= '4') {
+        e.preventDefault();
+        const idx = parseInt(e.key) - 1;
+        this.app.selectOption(idx);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!this.app.renderer.els.btnNext.classList.contains('hide')) {
+          this.app.nextQuestion();
         }
       }
-      DB = data;
-      saveDB();
-      updateBankInfo();
-      alert('[SUCCESS] Loaded ' + data.length + ' questions from ' + file.name);
-    } catch(err){ alert('[ERROR] ' + err.message); }
-  };
-  reader.readAsText(file);
-}
+    }
 
-$('btn-export').addEventListener('click', function(){
-  var blob = new Blob([JSON.stringify(DB, null, 2)], {type:'application/json'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'question_bank.json';
-  a.click();
-  URL.revokeObjectURL(url);
-});
+    // Result screen
+    if (!this.app.renderer.screens.result.classList.contains('hide')) {
+      if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault();
+        if (!this.app.renderer.els.btnRetry.classList.contains('hide')) {
+          this.app.retryWrong();
+        }
+      }
+    }
 
-$('btn-reset-bank').addEventListener('click', function(){
-  if(confirm('[CONFIRM] Reset to default 100 questions? All custom data will be lost.')){
-    DB = DEFAULT_DB.slice();
-    saveDB();
-    updateBankInfo();
-    alert('[RESET] Default bank restored.');
-  }
-});
-
-// ===================== QUIZ LOGIC =====================
-function startQuiz(isDaily){
-  var r, n;
-  if(isDaily){
-    var s = +$('daily-start').value;
-    var e = +$('daily-end').value;
-    if(s < 1 || e > DB.length || s > e){ alert('[ERROR] Invalid daily range.'); return; }
-    r = {s:s, e:e};
-    n = +$('daily-count').value;
-  } else {
-    r = parseR($('sel-range').value);
-    n = +$('sel-count').value;
-  }
-  var filtered = DB.map(function(q,i){ return {orig:i+1, q:q.q, a:q.a.slice(), c:q.c, e:q.e}; }).filter(function(q){ return q.orig>=r.s && q.orig<=r.e; });
-  if(filtered.length===0){ alert('[ERROR] No packets in range.'); return; }
-  var sel = shuf(filtered).slice(0, Math.min(n, filtered.length));
-  cur = sel.map(function(q){
-    var ix = shuf([0,1,2,3]);
-    var na = ix.map(function(i){ return q.a[i]; });
-    var nc = ix.indexOf(q.c);
-    return {orig:q.orig, q:q.q, a:na, c:nc, e:q.e};
-  });
-  idx = 0; wrong = []; answered = false;
-  show('sc-setup', false);
-  show('sc-history', false);
-  show('sc-result', false);
-  show('sc-quiz', true);
-  $('badge').textContent = isDaily ? 'DAILY_MODE' : 'QUIZ_MODE';
-  renderQ();
-}
-
-$('btn-start').addEventListener('click', function(){ startQuiz(false); });
-$('btn-daily').addEventListener('click', function(){ startQuiz(true); });
-
-function renderQ(){
-  var q = cur[idx];
-  $('q-meta').innerHTML = '&gt;&gt; PACKET <span>'+(idx+1)+'</span> OF <span>'+cur.length+'</span>  ::  ORIGIN_Q<span>'+q.orig+'</span>';
-
-  var text = q.q;
-  var lines = text.split('\n');
-
-  // Multi-line questions: line 1 = text, rest = code block
-  if(lines.length > 1 && /\b(async|await|function|const|let|var|return|if|for|while|console|Promise|setTimeout)\b/.test(text)){
-    $('q-text').innerHTML = '<div style="margin-bottom:12px;">' + escapeHtml(lines[0]) + '</div>' + formatCodeBlock(lines.slice(1).join('\n'));
-  } else {
-    $('q-text').textContent = text;
-  }
-
-  $('q-exp').classList.add('hide');
-  $('btn-next').classList.add('hide');
-  answered = false;
-  var box = $('q-opts');
-  box.innerHTML = '';
-  q.a.forEach(function(ans, i){
-    var d = document.createElement('div');
-    d.className = 'opt';
-    d.innerHTML = '<span class="let">'+String.fromCharCode(65+i)+'</span><span>'+escapeHtml(ans)+'</span>';
-    d.addEventListener('click', function(){ pick(i, d); });
-    box.appendChild(d);
-  });
-  updateProg();
-}
-
-function pick(i, el){
-  if(answered) return;
-  answered = true;
-  var q = cur[idx];
-  var ok = i === q.c;
-  var opts = $('q-opts').children;
-  for(var k=0;k<opts.length;k++){
-    opts[k].classList.add('dis');
-    if(k===q.c) opts[k].classList.add('cor');
-    else if(k===i && !ok) opts[k].classList.add('wrg');
-  }
-  if(!ok) wrong.push(q);
-  var exp = $('q-exp');
-  exp.innerHTML = '<strong>'+(ok?'[ PASS ]':'[ FAIL ]')+'</strong><br>'+escapeHtml(q.e);
-  exp.classList.remove('hide');
-  $('btn-next').textContent = (idx === cur.length-1) ? '[ TRANSMIT_REPORT ]' : '[ NEXT_PACKET ]';
-  $('btn-next').classList.remove('hide');
-}
-
-function nextQ(){
-  if(idx < cur.length-1){ idx++; renderQ(); }
-  else showRes();
-}
-
-function showRes(){
-  show('sc-quiz', false);
-  show('sc-result', true);
-  $('badge').textContent = 'REPORT_MODE';
-  var tot = cur.length;
-  var wc = wrong.length;
-  var cc = tot - wc;
-  var pct = tot===0 ? 0 : Math.round((cc/tot)*100);
-  $('r-cor').textContent = cc;
-  $('r-wrg').textContent = wc;
-  $('r-pct').textContent = pct+'%';
-  recordSession(tot, cc);
-  if(wc>0){
-    show('r-wsec', true);
-    show('btn-retry', true);
-    $('r-wlist').innerHTML = wrong.map(function(q){
-      return '<div class="wit"><div class="wn">[ PACKET_'+q.orig+' ]</div><div>'+escapeHtml(q.q.length>120?q.q.slice(0,120)+'...':q.q)+'</div></div>';
-    }).join('');
-  } else {
-    show('r-wsec', true);
-    show('btn-retry', false);
-    $('r-wlist').innerHTML = '<div class="wit" style="border-left-color:#3fb950;"><div class="wn" style="color:#3fb950;">[ SYSTEM_INTEGRITY_100% ]</div><div>All packets verified. No corruption detected.</div></div>';
+    // Global back
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      this.app.backToSetup();
+    }
   }
 }
 
-function retryWrong(){
-  if(wrong.length===0) return;
-  cur = wrong.map(function(q){
-    var ix = shuf([0,1,2,3]);
-    var na = ix.map(function(i){ return q.a[i]; });
-    var nc = ix.indexOf(q.c);
-    return {orig:q.orig, q:q.q, a:na, c:nc, e:q.e};
-  });
-  idx = 0; wrong = []; answered = false;
-  show('sc-result', false);
-  show('sc-quiz', true);
-  $('badge').textContent = 'RETRY_MODE';
-  renderQ();
-}
+// ============================================================
+//  APP CONTROLLER
+// ============================================================
 
-function backSetup(){
-  show('sc-quiz', false);
-  show('sc-result', false);
-  show('sc-history', false);
-  show('sc-setup', true);
-  $('badge').textContent = 'SETUP_MODE';
-}
+class QuizApp {
+  constructor() {
+    this.bank = new QuestionBank();
+    this.stats = new StatsTracker();
+    this.renderer = new Renderer();
+    this.keyboard = new KeyboardController(this);
 
-function updateProg(){
-  var pct = cur.length===0 ? 0 : (idx/cur.length)*100;
-  $('prog-bar').style.width = pct+'%';
-}
+    this.currentQuestions = [];
+    this.currentIndex = 0;
+    this.wrongQuestions = [];
+    this.answered = false;
+    this.sessionResults = [];
+    this.isDaily = false;
 
-$('btn-next').addEventListener('click', nextQ);
-$('btn-retry').addEventListener('click', retryWrong);
-$('btn-new').addEventListener('click', backSetup);
-
-// ===================== HISTORY =====================
-$('btn-history').addEventListener('click', function(){
-  show('sc-setup', false);
-  show('sc-history', true);
-  var tbody = $('hist-table').querySelector('tbody');
-  tbody.innerHTML = sessionHistory.map(function(h){
-    return '<tr><td>'+h.date+'</td><td>'+h.range+'</td><td>'+h.total+'</td><td>'+h.correct+'</td><td>'+h.score+'</td></tr>';
-  }).join('') || '<tr><td colspan="5" style="text-align:center;padding:20px;">No sessions yet</td></tr>';
-});
-
-$('btn-back-setup').addEventListener('click', backSetup);
-$('btn-clear-hist').addEventListener('click', function(){
-  if(confirm('[CONFIRM] Clear all session history?')){
-    sessionHistory = [];
-    saveHistory();
-    $('hist-table').querySelector('tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">History cleared</td></tr>';
+    this.bindEvents();
+    this.refreshSetup();
   }
-});
 
-// ===================== INIT =====================
-loadStorage();
+  bindEvents() {
+    // File drop
+    const dropZone = document.getElementById('file-drop');
+    const fileInput = document.getElementById('file-input');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) this.handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) this.handleFile(fileInput.files[0]);
+    });
+
+    // Buttons
+    document.getElementById('btn-export').addEventListener('click', () => this.exportBank());
+    document.getElementById('btn-reset-bank').addEventListener('click', () => this.resetBank());
+    document.getElementById('btn-start').addEventListener('click', () => this.startQuiz(false));
+    document.getElementById('btn-daily').addEventListener('click', () => this.startQuiz(true));
+    document.getElementById('btn-history').addEventListener('click', () => this.showHistory());
+    document.getElementById('btn-back-setup').addEventListener('click', () => this.backToSetup());
+    document.getElementById('btn-clear-hist').addEventListener('click', () => this.clearHistory());
+    document.getElementById('btn-next').addEventListener('click', () => this.nextQuestion());
+    document.getElementById('btn-retry').addEventListener('click', () => this.retryWrong());
+    document.getElementById('btn-new').addEventListener('click', () => this.backToSetup());
+
+    // Option clicks via delegation
+    this.renderer.els.qOpts.addEventListener('click', (e) => {
+      const opt = e.target.closest('.opt');
+      if (!opt) return;
+      const idx = parseInt(opt.dataset.idx);
+      this.selectOption(idx);
+    });
+  }
+
+  refreshSetup() {
+    this.renderer.updateBankInfo(this.bank.getCounts());
+    this.renderer.updateDailyStats(this.stats.stats, this.stats.accuracy);
+  }
+
+  handleFile(file) {
+    if (!file || !file.name.endsWith('.json')) {
+      alert('[ERROR] Only .json files accepted.'); return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        this.bank.import(data);
+        this.refreshSetup();
+        alert(`[SUCCESS] Loaded ${data.length} questions from ${file.name}`);
+      } catch (err) {
+        alert('[ERROR] ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  exportBank() {
+    const blob = new Blob([JSON.stringify(this.bank.export(), null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'question_bank.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  resetBank() {
+    if (confirm('[CONFIRM] Reset to default 100 questions? All custom data will be lost.')) {
+      this.bank.reset();
+      this.refreshSetup();
+      alert('[RESET] Default bank restored.');
+    }
+  }
+
+  startQuiz(isDaily) {
+    let range, count;
+    if (isDaily) {
+      const s = +document.getElementById('daily-start').value;
+      const e = +document.getElementById('daily-end').value;
+      if (s < 1 || e > this.bank.questions.length || s > e) {
+        alert('[ERROR] Invalid daily range.'); return;
+      }
+      range = { start: s, end: e };
+      count = +document.getElementById('daily-count').value;
+    } else {
+      range = Utils.parseRange(document.getElementById('sel-range').value);
+      count = +document.getElementById('sel-count').value;
+    }
+
+    const filtered = this.bank.getByRange(range.start, range.end);
+    if (filtered.length === 0) { alert('[ERROR] No packets in range.'); return; }
+
+    const shuffled = Utils.shuffle(filtered).slice(0, Math.min(count, filtered.length));
+    this.currentQuestions = shuffled.map(q => {
+      const ix = Utils.shuffle([0, 1, 2, 3]);
+      return {
+        orig: q.id,
+        q: q.q,
+        a: ix.map(i => q.a[i]),
+        c: ix.indexOf(q.c),
+        e: q.e,
+        cat: q.cat || 'fundamentals'
+      };
+    });
+
+    this.currentIndex = 0;
+    this.wrongQuestions = [];
+    this.answered = false;
+    this.sessionResults = [];
+    this.isDaily = isDaily;
+
+    this.renderer.show('quiz');
+    this.renderer.setBadge(isDaily ? 'DAILY_MODE' : 'QUIZ_MODE');
+    this.renderCurrentQuestion();
+  }
+
+  renderCurrentQuestion() {
+    this.answered = false;
+    this.renderer.renderQuestion(
+      this.currentQuestions[this.currentIndex],
+      this.currentIndex,
+      this.currentQuestions.length
+    );
+  }
+
+  selectOption(idx) {
+    if (this.answered) return;
+    this.answered = true;
+
+    const q = this.currentQuestions[this.currentIndex];
+    const isCorrect = idx === q.c;
+
+    this.renderer.markAnswer(idx, q.c);
+    this.renderer.showExplanation(isCorrect, q.e);
+    this.renderer.showNextButton(this.currentIndex === this.currentQuestions.length - 1);
+
+    if (!isCorrect) this.wrongQuestions.push(q);
+
+    this.sessionResults.push({
+      id: q.orig,
+      isCorrect: isCorrect,
+      cat: q.cat
+    });
+  }
+
+  nextQuestion() {
+    if (this.currentIndex < this.currentQuestions.length - 1) {
+      this.currentIndex++;
+      this.renderCurrentQuestion();
+    } else {
+      this.showResults();
+    }
+  }
+
+  showResults() {
+    const total = this.currentQuestions.length;
+    const correct = total - this.wrongQuestions.length;
+    const range = this.isDaily
+      ? document.getElementById('daily-start').value + '-' + document.getElementById('daily-end').value
+      : document.getElementById('sel-range').value;
+
+    this.stats.recordSession(total, correct, range, this.sessionResults);
+
+    const catStats = this.stats.getCategoryAccuracy();
+    this.renderer.renderResults(total, correct, this.wrongQuestions, catStats);
+    this.renderer.show('result');
+    this.renderer.setBadge('REPORT_MODE');
+    this.refreshSetup();
+  }
+
+  retryWrong() {
+    if (this.wrongQuestions.length === 0) return;
+    this.currentQuestions = this.wrongQuestions.map(q => {
+      const ix = Utils.shuffle([0, 1, 2, 3]);
+      return {
+        orig: q.orig,
+        q: q.q,
+        a: ix.map(i => q.a[i]),
+        c: ix.indexOf(q.c),
+        e: q.e,
+        cat: q.cat
+      };
+    });
+    this.currentIndex = 0;
+    this.wrongQuestions = [];
+    this.answered = false;
+    this.sessionResults = [];
+    this.renderer.show('quiz');
+    this.renderer.setBadge('RETRY_MODE');
+    this.renderCurrentQuestion();
+  }
+
+  backToSetup() {
+    this.renderer.show('setup');
+    this.renderer.setBadge('SETUP_MODE');
+    this.refreshSetup();
+  }
+
+  showHistory() {
+    this.renderer.renderHistory(this.stats.history);
+    this.renderer.show('history');
+  }
+
+  clearHistory() {
+    if (confirm('[CONFIRM] Clear all session history?')) {
+      this.stats.clearHistory();
+      this.renderer.renderHistory([]);
+    }
+  }
+}
+
+// ============================================================
+//  BOOT
+// ============================================================
+const app = new QuizApp();
 </script>
 </body>
 </html>
